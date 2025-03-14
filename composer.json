@@ -9,9 +9,11 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.75",
+        "laravel/horizon": "^5.22",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "predis/predis": "^2.3",
+        "symfony/mailer": "^6.1",
         "tymon/jwt-auth": "^1.0@dev"
     },
     "require-dev": {
