@@ -1,5 +1,6 @@
 <?php
 
+// app/Console/Kernel.php
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
@@ -8,6 +9,15 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     /**
+     * The Artisan commands provided by your application.
+     *
+     * @var array
+     */
+    protected $commands = [
+        Commands\SendReviewEmails::class,
+    ];
+
+    /**
      * Define the application's command schedule.
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
@@ -15,7 +25,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // Fetch orders and send emails daily
+        $schedule->command('amazon:send-emails')
+            ->dailyAt('01:00')
+            ->appendOutputTo(storage_path('logs/amazon-emails.log'));
+            
+        // You could also run a more frequent check for pending emails
+        $schedule->command('amazon:send-emails')
+            ->hourly()
+            ->appendOutputTo(storage_path('logs/amazon-emails-hourly.log'));
     }
 
     /**
@@ -26,7 +44,6 @@ class Kernel extends ConsoleKernel
     protected function commands()
     {
         $this->load(__DIR__.'/Commands');
-
         require base_path('routes/console.php');
     }
 }
